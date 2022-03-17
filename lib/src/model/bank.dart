@@ -27,7 +27,7 @@ class Bank {
   }
 
   static Future<Bank> bankByCode(int code) async => await BankRepository().getBankByCode(code);
-
+  
   static Future<List<Bank>> listbank() async => await BankRepository().getListBank();
  
 }

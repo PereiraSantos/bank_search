@@ -1,9 +1,18 @@
-import 'dart:developer' as develop;
 
 class ExceptionConexao implements Exception {
-
-  erro(String erro) => develop.log("erro", error: erro);
-
-  String errMsg() => 'Erro ao busca no servidor';
-
+  ExceptionConexao();
 }
+
+class ExceptionSeverInternal implements Exception {
+  ExceptionSeverInternal();
+}
+
+class ExceptionOther implements Exception {
+  ExceptionOther();
+}
+
+class ExceptionUnknown implements Exception {
+  final String error;
+  ExceptionUnknown(this.error);
+}
+

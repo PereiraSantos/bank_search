@@ -8,15 +8,23 @@ class BankRepository {
 
   final String url = "https://brasilapi.com.br/api/banks/v1";
 
-  Future<Bank> getBankByCode(int code) async {
+  Future<Bank> getBankByCode(int code) async {  
     try{
       Response response = await Dio().get("$url/$code");
       return Bank.fromJson(response.data);
-    } 
-    catch (e) {
-      throw ExceptionConexao().erro(e.toString());
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 404) {
+        throw ExceptionConexao();
+      }
+      else if (e.response?.statusCode == 500) {
+        throw ExceptionSeverInternal();
+      }
+      else{
+        throw ExceptionOther();
+      }
+    } catch (e){
+      throw ExceptionUnknown("Erro $e");
     }
-    
   }
 
   Future<List<Bank>> getListBank() async {
@@ -27,9 +35,18 @@ class BankRepository {
       }).toList();
 
     return listBanck;
-    }
-    catch (e) {
-      throw ExceptionConexao().erro(e.toString());
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 404) {
+        throw ExceptionConexao();
+      }
+      else if (e.response?.statusCode == 500) {
+        throw ExceptionSeverInternal();
+      }
+      else{
+        throw ExceptionOther();
+      }
+    } catch (e){
+      throw ExceptionUnknown("Erro $e");
     }
   }
 
