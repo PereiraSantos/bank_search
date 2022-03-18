@@ -1,18 +1,28 @@
+abstract class ExceptionRepository implements Exception {
+  final String? messageErro;
 
-class ExceptionConexao implements Exception {
-  ExceptionConexao();
+  ExceptionRepository({this.messageErro}){
+    errMsg();
+  }
+
+  String errMsg() => messageErro?? 'Erro na conexão da api'; 
 }
 
-class ExceptionSeverInternal implements Exception {
-  ExceptionSeverInternal();
+class ExceptionConexao extends ExceptionRepository {
+  ExceptionConexao({String? messageErro})
+    :super(messageErro: messageErro?? "Código bancário não encontrado");
 }
 
-class ExceptionOther implements Exception {
-  ExceptionOther();
+class ExceptionSeverInternal extends ExceptionConexao {
+  ExceptionSeverInternal({String? messageErro}):super(messageErro: messageErro?? "Erro Interno servidor");
+
 }
 
-class ExceptionUnknown implements Exception {
-  final String error;
-  ExceptionUnknown(this.error);
+class ExceptionOther extends ExceptionConexao{
+  ExceptionOther({String? messageErro}):super(messageErro: messageErro?? "Erro na conexao");
+}
+
+class ExceptionUnknown extends ExceptionConexao {
+  ExceptionUnknown({String? messageErro}):super(messageErro: messageErro?? "Erro na conexão");
 }
 

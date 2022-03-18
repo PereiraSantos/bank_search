@@ -2,8 +2,6 @@ import 'package:bank_search/src/exception/exception.dart';
 import 'package:bank_search/src/model/bank.dart';
 import 'package:dio/dio.dart';
 
-
-
 class BankRepository {
 
   final String url = "https://brasilapi.com.br/api/banks/v1";
@@ -14,7 +12,7 @@ class BankRepository {
       return Bank.fromJson(response.data);
     } on DioError catch (e) {
       if (e.response?.statusCode == 404) {
-        throw ExceptionConexao();
+        throw ExceptionConexao(messageErro: 'O código do banco não foi encontrado');
       }
       else if (e.response?.statusCode == 500) {
         throw ExceptionSeverInternal();
@@ -23,7 +21,7 @@ class BankRepository {
         throw ExceptionOther();
       }
     } catch (e){
-      throw ExceptionUnknown("Erro $e");
+      throw ExceptionUnknown(messageErro: "Erro $e");
     }
   }
 
@@ -40,13 +38,13 @@ class BankRepository {
         throw ExceptionConexao();
       }
       else if (e.response?.statusCode == 500) {
-        throw ExceptionSeverInternal();
+        throw ExceptionSeverInternal(messageErro: "Erro interno");
       }
       else{
         throw ExceptionOther();
       }
     } catch (e){
-      throw ExceptionUnknown("Erro $e");
+      throw ExceptionUnknown(messageErro: "Erro $e");
     }
   }
 
